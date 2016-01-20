@@ -1,6 +1,8 @@
 (function() {
   var app;
 
+  $("select").material_select();
+
   app = angular.module("unitConverter", []);
 
   app.controller("mainController", function($scope) {
@@ -61,7 +63,8 @@
       $scope.value = 1;
       $scope.from = Object.keys($scope.units[$scope.type])[0];
       $scope.to = Object.keys($scope.units[$scope.type])[1];
-      return $scope.convert();
+      $scope.convert();
+      return $("select").material_select();
     };
     $scope.convert = function() {
       var from, result, to;
