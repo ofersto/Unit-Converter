@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="unitConverter">
+  <head>
+    <title>Simple Unit Converter</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <style>
+      body { min-width: 300px; }
+      .btn-block { width: 100%; }
+      h5 { margin: 15px 0; }
+    </style>
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/ng-converter.js"></script>
+  </head>
+  <body ng-controller="mainController">
+    <div class="container">
+      <h3>Unit Converter</h3>
+      <div class="container">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field">
+              <input type="number" name="value" min="1" ng-model="value" ng-change="convert()">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select name="from" ng-model="from" ng-change="convert()">
+                <option ng-repeat="unit in Utils.keys(units[type])" value="{{ unit }}">{{ unit }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select name="to" ng-model="to" ng-change="convert()">
+                <option ng-repeat="unit in Utils.keys(units[type])" value="{{ unit }}">{{ unit }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select name="type" ng-model="type" ng-change="typeChanged()">
+                <option ng-repeat="type in Utils.keys(units)" value="{{ type }}">{{ type }}</option>
+              </select>
+            </div>
+          </div>
+          <button name="convert" type="button" ng-click="convert()" class="btn btn-block">Convert</button>
+        </form>
+        <h5>Result: {{ Utils.round(result, 4) }}</h5>
+        <p>{{ curr_status }}</p>
+      </div>
+    </div>
+  </body>
+</html>

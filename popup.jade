@@ -1,0 +1,40 @@
+doctype html
+html(lang="en", ng-app="unitConverter")
+	head
+		title Simple Unit Converter
+		link(rel="stylesheet", href="css/materialize.min.css")
+		style.
+			body { min-width: 300px; }
+			.btn-block { width: 100%; }
+			h5 { margin: 15px 0; }
+		script(src="js/jquery-2.2.0.min.js")
+		script(src="js/angular.min.js")
+		script(src="js/materialize.min.js")
+		script(src="js/ng-converter.js")
+	body(ng-controller="mainController")
+		.container
+			h3 Unit Converter
+			.container
+				form.col.s12
+					.row
+						.input-field
+							input(type="number", name="value", min="1", ng-model="value", ng-change="convert()")
+					
+					.row
+						.input-field
+							select(name="from", ng-model="from", ng-change="convert()")
+								option(ng-repeat="unit in Utils.keys(units[type])", value="{{ unit }}") {{ unit }}
+					
+					.row
+						.input-field
+							select(name="to", ng-model="to", ng-change="convert()")
+								option(ng-repeat="unit in Utils.keys(units[type])", value="{{ unit }}") {{ unit }}
+
+					.row
+						.input-field
+							select(name="type", ng-model="type", ng-change="typeChanged()")
+								option(ng-repeat="type in Utils.keys(units)", value="{{ type }}") {{ type }}
+
+					button.btn.btn-block(name="convert", type="button", ng-click="convert()") Convert
+				h5 Result: {{ Utils.round(result, 4) }}
+				p {{ curr_status }}
