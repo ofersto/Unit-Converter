@@ -34,6 +34,10 @@
         "Ounce": 28.3495
       }
     };
+    $scope.value = 1;
+    $scope.from = "Mile";
+    $scope.to = "Kilometer";
+    $scope.type = "Distance";
     $.ajax({
       url: "http://api.fixer.io/latest",
       type: "GET",
@@ -44,6 +48,9 @@
         obj[data.base] = 1;
         Object.keys(obj).sort();
         $scope.units["Currency"] = obj;
+        $scope.type = "Currency";
+        $scope.typeChanged();
+        $("select[name='type']").trigger("change");
         return void 0;
       },
       error: function() {
@@ -60,10 +67,6 @@
         }
       }
     };
-    $scope.value = 1;
-    $scope.from = "Mile";
-    $scope.to = "Kilometer";
-    $scope.type = "Distance";
     $scope.typeChanged = function() {
       $scope.value = 1;
       $scope.from = Object.keys($scope.units[$scope.type])[0];

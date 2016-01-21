@@ -26,6 +26,10 @@ app.controller "mainController", ($scope) ->
 			"Stone": 6350.29
 			"Pound": 453.592
 			"Ounce": 28.3495
+	$scope.value = 1
+	$scope.from = "Mile"
+	$scope.to = "Kilometer"
+	$scope.type = "Distance"
 	$.ajax
 		url: "http://api.fixer.io/latest"
 		type: "GET"
@@ -35,6 +39,9 @@ app.controller "mainController", ($scope) ->
 			obj[data.base] = 1
 			Object.keys(obj).sort()
 			$scope.units["Currency"] = obj
+			$scope.type = "Currency"
+			$scope.typeChanged()
+			$("select[name='type']").trigger("change")
 			undefined
 		error: ->
 			$scope.currStatus = "Sorry, but we couldn't get the currencies data"
@@ -45,10 +52,6 @@ app.controller "mainController", ($scope) ->
 				Number(n).toFixed(dec)
 			else
 				$scope.convert()
-	$scope.value = 1
-	$scope.from = "Mile"
-	$scope.to = "Kilometer"
-	$scope.type = "Distance"
 	$scope.typeChanged = ->
 		$scope.value = 1
 		$scope.from = Object.keys($scope.units[$scope.type])[0]
