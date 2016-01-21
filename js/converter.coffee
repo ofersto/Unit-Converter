@@ -1,4 +1,8 @@
-$("select").material_select()
+$ ->
+	$("select").material_select()
+	$("select[name='type']").on "change", ->
+		$("select").material_select()
+
 app = angular.module "unitConverter", []
 app.controller "mainController", ($scope) ->
 	$scope.units =
@@ -50,7 +54,7 @@ app.controller "mainController", ($scope) ->
 		$scope.from = Object.keys($scope.units[$scope.type])[0]
 		$scope.to = Object.keys($scope.units[$scope.type])[1]
 		$scope.convert()
-		$("select").material_select()
+		undefined
 	$scope.convert = ->
 		from = $scope.units[$scope.type][$scope.from]
 		to = $scope.units[$scope.type][$scope.to]

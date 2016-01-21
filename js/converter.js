@@ -1,7 +1,12 @@
 (function() {
   var app;
 
-  $("select").material_select();
+  $(function() {
+    $("select").material_select();
+    return $("select[name='type']").on("change", function() {
+      return $("select").material_select();
+    });
+  });
 
   app = angular.module("unitConverter", []);
 
@@ -64,7 +69,7 @@
       $scope.from = Object.keys($scope.units[$scope.type])[0];
       $scope.to = Object.keys($scope.units[$scope.type])[1];
       $scope.convert();
-      return $("select").material_select();
+      return void 0;
     };
     $scope.convert = function() {
       var from, result, to;
