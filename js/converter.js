@@ -38,24 +38,17 @@
     $scope.from = "Mile";
     $scope.to = "Kilometer";
     $scope.type = "Distance";
-    $.ajax({
-      url: "http://api.fixer.io/latest",
-      type: "GET",
-      dataType: "jsonp",
-      success: function(data) {
-        var obj;
-        obj = data.rates;
-        obj[data.base] = 1;
-        Object.keys(obj).sort();
-        $scope.units["Currency"] = obj;
-        $scope.type = "Currency";
-        $scope.typeChanged();
-        $("select[name='type']").trigger("change");
-        return void 0;
-      },
-      error: function() {
-        return $scope.currStatus = "Sorry, but we couldn't get the currencies data";
-      }
+    $.getJSON("http://api.fixer.io/latest", function(data) {
+      var obj;
+      obj = data.rates;
+      obj[data.base] = 1;
+      Object.keys(obj).sort();
+      $scope.units["Currency"] = obj;
+      $scope.type = "Currency";
+      $scope.typeChanged();
+      return $("select[name='type']").trigger("change");
+    }).fail(function() {
+      return $scope.currStatus = "Sorry, but we couldn't get the currencies data";
     });
     $scope.Utils = {
       keys: Object.keys,

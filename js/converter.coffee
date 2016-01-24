@@ -30,21 +30,31 @@ app.controller "mainController", ($scope) ->
 	$scope.from = "Mile"
 	$scope.to = "Kilometer"
 	$scope.type = "Distance"
-	$.ajax
-		url: "http://api.fixer.io/latest"
-		type: "GET"
-		dataType: "jsonp"
-		success: (data) ->
-			obj = data.rates
-			obj[data.base] = 1
-			Object.keys(obj).sort()
-			$scope.units["Currency"] = obj
-			$scope.type = "Currency"
-			$scope.typeChanged()
-			$("select[name='type']").trigger("change")
-			undefined
-		error: ->
-			$scope.currStatus = "Sorry, but we couldn't get the currencies data"
+	# $.ajax
+	# 	url: "http://api.fixer.io/latest"
+	# 	type: "GET"
+	# 	dataType: "jsonp"
+	# 	success: (data) ->
+	# 		obj = data.rates
+	# 		obj[data.base] = 1
+	# 		Object.keys(obj).sort()
+	# 		$scope.units["Currency"] = obj
+	# 		$scope.type = "Currency"
+	# 		$scope.typeChanged()
+	# 		$("select[name='type']").trigger("change")
+	# 		undefined
+	# 	error: ->
+	# 		$scope.currStatus = "Sorry, but we couldn't get the currencies data"
+	$.getJSON "http://api.fixer.io/latest", (data) ->
+		obj = data.rates
+		obj[data.base] = 1
+		Object.keys(obj).sort()
+		$scope.units["Currency"] = obj
+		$scope.type = "Currency"
+		$scope.typeChanged()
+		$("select[name='type']").trigger("change")
+	.fail ->
+		$scope.currStatus = "Sorry, but we couldn't get the currencies data"
 	$scope.Utils = 
 		keys: Object.keys
 		round: (n, dec) ->
