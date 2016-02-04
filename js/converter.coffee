@@ -34,25 +34,11 @@ app.controller "mainController", ($scope) ->
 				"Pound": 453.592
 				"Ounce": 28.3495
 		storage.units = JSON.stringify($scope.units)
-	if storage.value
-		$scope.value = Number(storage.value)
-	else
-		$scope.value = 1
 
-	if storage.type
-		$scope.type = storage.type
-	else
-		$scope.type = "Distance"
-
-	if storage.from
-		$scope.from = storage.from
-	else
-		$scope.from = Object.keys($scope.units[$scope.type])[0]
-
-	if storage.to
-		$scope.to = storage.to
-	else
-		$scope.to = Object.keys($scope.units[$scope.type])[1]
+	$scope.value = if storage.value then Number(storage.value) else 1
+	$scope.type = if storage.type then storage.type else "Distance"
+	$scope.from = if storage.from then storage.from else $scope.from = Object.keys($scope.units[$scope.type])[0]
+	$scope.to = if storage.to then storage.to else $scope.from = Object.keys($scope.units[$scope.type])[1]
 
 	getCurrData = ->
 		now = new Date()
@@ -66,7 +52,8 @@ app.controller "mainController", ($scope) ->
 		nowStr = y + "-" + m + "-" + d
 		if storage.currDate != nowStr
 			console.log "get currencies data"
-			$.getJSON "http://api.fixer.io/latest", (data) ->
+			$.getJSON "http://api.fixer.io/latest"
+			.done (data) ->
 				if not data.date == nowStr
 					obj = data.rates
 					obj[data.base] = 1
@@ -75,11 +62,8 @@ app.controller "mainController", ($scope) ->
 					storage.units = JSON.stringify $scope.units
 					storage.currDate = data.date
 					$("select[name='type']").trigger("change")
-				$scope.currStatus = "Currencies data are loaded successfully"
 			.fail ->
 				$scope.currStatus = "Sorry, but we couldn't get the currencies data"
-		else
-			$scope.currStatus = "The currencies data is already loaded!"
 	getCurrData()
 	$scope.Utils = 
 		keys: Object.keys

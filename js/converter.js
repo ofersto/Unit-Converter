@@ -48,26 +48,10 @@
       };
       storage.units = JSON.stringify($scope.units);
     }
-    if (storage.value) {
-      $scope.value = Number(storage.value);
-    } else {
-      $scope.value = 1;
-    }
-    if (storage.type) {
-      $scope.type = storage.type;
-    } else {
-      $scope.type = "Distance";
-    }
-    if (storage.from) {
-      $scope.from = storage.from;
-    } else {
-      $scope.from = Object.keys($scope.units[$scope.type])[0];
-    }
-    if (storage.to) {
-      $scope.to = storage.to;
-    } else {
-      $scope.to = Object.keys($scope.units[$scope.type])[1];
-    }
+    $scope.value = storage.value ? Number(storage.value) : 1;
+    $scope.type = storage.type ? storage.type : "Distance";
+    $scope.from = storage.from ? storage.from : $scope.from = Object.keys($scope.units[$scope.type])[0];
+    $scope.to = storage.to ? storage.to : $scope.from = Object.keys($scope.units[$scope.type])[1];
     getCurrData = function() {
       var d, m, now, nowStr, y;
       now = new Date();
@@ -83,7 +67,7 @@
       nowStr = y + "-" + m + "-" + d;
       if (storage.currDate !== nowStr) {
         console.log("get currencies data");
-        return $.getJSON("http://api.fixer.io/latest", function(data) {
+        return $.getJSON("http://api.fixer.io/latest").done(function(data) {
           var obj;
           if (!data.date === nowStr) {
             obj = data.rates;
@@ -92,14 +76,11 @@
             $scope.units["Currency"] = obj;
             storage.units = JSON.stringify($scope.units);
             storage.currDate = data.date;
-            $("select[name='type']").trigger("change");
+            return $("select[name='type']").trigger("change");
           }
-          return $scope.currStatus = "Currencies data are loaded successfully";
         }).fail(function() {
           return $scope.currStatus = "Sorry, but we couldn't get the currencies data";
         });
-      } else {
-        return $scope.currStatus = "The currencies data is already loaded!";
       }
     };
     getCurrData();
