@@ -69,15 +69,14 @@
         console.log("get currencies data");
         return $.getJSON("http://api.fixer.io/latest").done(function(data) {
           var obj;
-          if (!data.date === nowStr) {
-            obj = data.rates;
-            obj[data.base] = 1;
-            Object.keys(obj).sort();
-            $scope.units["Currency"] = obj;
-            storage.units = JSON.stringify($scope.units);
-            storage.currDate = data.date;
-            return $("select[name='type']").trigger("change");
-          }
+          obj = data.rates;
+          obj[data.base] = 1;
+          Object.keys(obj).sort();
+          $scope.units["Currency"] = obj;
+          storage.units = JSON.stringify($scope.units);
+          storage.currDate = data.date;
+          console.log("Got currencies data successfully");
+          return $("select[name='type']").trigger("change");
         }).fail(function() {
           return $scope.currStatus = "Sorry, but we couldn't get the currencies data";
         });

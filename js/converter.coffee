@@ -54,14 +54,14 @@ app.controller "mainController", ($scope) ->
 			console.log "get currencies data"
 			$.getJSON "http://api.fixer.io/latest"
 			.done (data) ->
-				if not data.date == nowStr
-					obj = data.rates
-					obj[data.base] = 1
-					Object.keys(obj).sort()
-					$scope.units["Currency"] = obj
-					storage.units = JSON.stringify $scope.units
-					storage.currDate = data.date
-					$("select[name='type']").trigger("change")
+				obj = data.rates
+				obj[data.base] = 1
+				Object.keys(obj).sort()
+				$scope.units["Currency"] = obj
+				storage.units = JSON.stringify $scope.units
+				storage.currDate = data.date
+				console.log "Got currencies data successfully"
+				$("select[name='type']").trigger("change")
 			.fail ->
 				$scope.currStatus = "Sorry, but we couldn't get the currencies data"
 	getCurrData()
